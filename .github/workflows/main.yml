@@ -1,0 +1,19 @@
+name: Build Aboba IPA
+on: [push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Project
+        run: |
+          mkdir -p Aboba
+          mv ContentView.swift Aboba/
+          mv Info.plist Aboba/
+          # Создаем пустой проект через swift package
+          cd Aboba && swift package init --type executable
+          
+      - name: Build
+        run: |
+          xcodebuild -scheme Aboba -sdk iphoneos -configuration Release
